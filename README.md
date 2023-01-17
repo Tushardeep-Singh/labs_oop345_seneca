@@ -1,2 +1,2 @@
 # Labs
-Object-Oriented Software Development Using C++ (Seneca College)
+Object-Oriented Software Development Using C++ (OOP345 @ Seneca College)
