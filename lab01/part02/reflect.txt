@@ -1,0 +1,63 @@
+I have done all the coding by myself and only copied the code that my professor provided to complete my workshops and assignments.
+
+Name : Tushardeep Singh
+seneca e-mail: tsingh245@myseneca.ca
+Seneca Student ID: 160427217
+completion date: 14th January'2023
+
+*********************************************************************************************************************
+'static' keyword is used with variables to change the lifetime of the variable. The 'static' keyword with a variable makes the lifetime of the variable to be equal to the lifetime of the program i.e. the variable gets initialised only once when the function gets called. In contrast, without 'static' keyword, the variable gets initialised every-time the function is called.
+
+foodorder.cpp :
+
+void sdds::FoodOrder::display()
+{	
+	static size_t counter{1};
+	cout << setw(2) << counter;
+	++counter;
+}
+
+Above, in display() variable 'counter' has been initialised using static keyword, that means it will only get initialised once when display() gets called first time in program execution. The counter will get pre-increment before the function exits. Next time, when an instance of a class calls display(), value of counter after ++counter will be outputted and not '1'.
+*********************************************************************************************************************
+
+In p2 of lab1, it was instructed to accept food description in the form of a C-style null-terminated string of any length.
+
+foodorder.h :
+
+namespace sdds
+{
+    class FoodOrder
+    {
+    private:
+        string food_desc;
+    };
+}
+
+foodorder.cpp :
+void sdds::FoodOrder::display()
+{
+	char *f_d_any_length = new char[food_desc.length() + 1];
+	strcpy(f_d_any_length, food_desc.c_str());
+
+	delete[] f_d_any_length;
+    f_d_any_length = nullptr;
+}
+
+
+For this, I first made 'food_desc' a string by including <string> library. I used getline() to store data present in .txt file into string 'food_desc'. 
+
+The read() function was only used to assign data to member variables of a instance of a class. The display() was the only function in the program that had to access 'food_desc' for printing it to the console. And for this reason I followed the below mentioned steps in display() function :
+
+First, I declared 'f_d_any_length' which is a pointer to an character array, where size of the array was length of the string 'food_desc' plus null terminator.
+
+Then I used 'food_desc.c_str()' which returns pointer to a character array with size of the array to be equal to length of the string 'food_desc' plus null terminator.
+
+Now, both the parameters of strcpy() are of same type, and so 'food_desc.c_str()' gets copied into 'f_d_any_length'.
+
+In this manner, food description can be stored in C-style null-terminated string of any length.
+
+At the end, dynamic memory was released to prevent memory leaks.
+*********************************************************************************************************************
+
+I found part 2 a bit challenging; I wasn't able to decide where should I assign dynamic memory to 'f_d_any_length' and at what place should I return it. So, just as a beginner I messed around by assigning it at different positions but it caused memory leaks.
+Then I re-read the w1_p2.cpp and saw that only the display() used the data stored in 'f_d_any_length'. Then I decided to assign the dynamic memory in display() and as per rules, return it within it's scope to prevent memory leaks.
