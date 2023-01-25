@@ -1,0 +1,55 @@
+Name : Tushardeep Singh
+seneca e-mail: tsingh245@myseneca.ca
+Seneca Student ID: 160427217
+completion date: 24th January'2023
+
+The following code is of copy constructor :
+
+sdds::ProteinDatabase::ProteinDatabase(const ProteinDatabase &source)
+{
+    this->counter = source.counter;
+    if (p_seq_arr == nullptr) // null pointer safety
+    {
+        this->p_seq_arr = new string[counter + 2];
+    }
+
+    for (size_t i = 0; i < this->counter + 2; ++i)
+    {
+        this->p_seq_arr[i] = source.p_seq_arr[i]; // filling this->p_seq_arr[i] with source.p_seq_arr[i]
+    }
+}
+
+
+this->p_seq_arr[i] = source.p_seq_arr[i]; In this, a copy of the value of source.p_seq_arr[i] is created which is then stored in this->p_seq_arr[I]. However, this copy is temporary and while it is getting stored in 'this', for an instance it exits twice and utilises twice the memory. Also, temporary memory is then deleted by the system. 
+So, this simple operation results in 3 things:
+1. Copying the value
+2. Utilising the memory twice
+3. Delete operation by the system
+
+Also, this operation is getting used in a loop so during every iteration these 3 things happen. 
+This is the reason copying operation is slow.
+
+
+The following code is of move constructor :
+sdds::ProteinDatabase::ProteinDatabase(ProteinDatabase &&source)
+{
+    this->counter = source.counter;
+
+    (this->p_seq_arr) = move((source.p_seq_arr));
+
+    if (source.p_seq_arr != nullptr)
+    {
+        source.p_seq_arr = nullptr;
+    }
+
+    source.counter = 0;
+}
+
+(this->p_seq_arr) = move((source.p_seq_arr)); In this, move() transfers the ownership of dynamic memory from  source.p_seq_arr to (this->p_seq_arr), which means that 'this' can access the values stored at those memory addresses. 
+Herein, there are no copy operations, no deletion, and never the memory gets use twice as before. So it is much more fast than copy operation. 
+
+But the point to be noted is that 'source' should not be used again because it is not destroyed and we can not destroy it either, because it is also pointing to the same address but the thing is it can not access the values. It is a good practice to assign it to nullptr after move operation is done so that the destructor doesn't delete this memory. If the destructor tries to delete this memory then it will cause undefined behaviour because  'this' is also pointing to the same memory address.
+
+This is the issue I faced while doing this lab, that I was deleting the 'source' memory which was crashing my program.
+
+In this workshop I learned a lot about null pointer safety, that to always check if a pointer is null before using it.

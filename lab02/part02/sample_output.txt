@@ -1,0 +1,70 @@
+Command Line:
+--------------------------
+  1: ws
+  2: proteinsequences.txt
+--------------------------
+
+  0-arg Constructor - protein_DBA.size =       0 strings -> 
+                                                   (a) String     1: []
+                                                   (a) String   100: []
+                                                   (a) String  1000: []
+                                                   (a) String  last: []
+                                                   (a) String last+: []
+
+  1-arg Constructor - protein_DBB.size =   23012 strings -> 
+                                                   (b) String     1: [381][MGARHLRYGREAGMNKTEIP][SALLSPQQNAEEREPAVPVS]
+                                                   (b) String   100: [561][MSTPAPGPRSGGELLVAQLQ][ADIILPDRTLSQLRRTETVA]
+                                                   (b) String  1000: [427][MPQTLEVIATLLFAVAVLHT][LFLSALAPTLVAAVMFLLPV]
+                                                   (b) String  last: [361][MAKVALITGITGQDGAYLAE][AAKRDKIIEDHGYPVPLVHE]
+                                                   (b) String last+: []
+
+  Copy Constructor  - protein_DBC.size =   23012 strings -> 
+                                                   (c) String     1: [MGARHLRYGREAGMNKTEIP]
+                                                   (c) String   100: [MSTPAPGPRSGGELLVAQLQ]
+                                                   (c) String  1000: [MPQTLEVIATLLFAVAVLHT]
+                                                   (c) String  last: [MAKVALITGITGQDGAYLAE]
+                                                   (c) String last+: []
+
+  Copy Assignment   - protein_DBA.size =   23012 strings -> 
+                                                   (a) String     1: [MGARHLRYGREAGMNKTEIP]
+                                                   (a) String   100: [MSTPAPGPRSGGELLVAQLQ]
+                                                   (a) String  1000: [MPQTLEVIATLLFAVAVLHT]
+                                                   (a) String  last: [MAKVALITGITGQDGAYLAE]
+                                                   (a) String last+: []
+
+  Move Constructor  - protein_DBD.size =   23012 strings -> 
+                                                   (a) String     1: []
+                                                   (a) String   100: []
+                                                   (a) String  1000: []
+                                                   (a) String  last: []
+                                                   (a) String last+: []
+
+                                                   (d) String     1: [MGARHLRYGREAGMNKTEIP]
+                                                   (d) String   100: [MSTPAPGPRSGGELLVAQLQ]
+                                                   (d) String  1000: [MPQTLEVIATLLFAVAVLHT]
+                                                   (d) String  last: [MAKVALITGITGQDGAYLAE]
+                                                   (d) String last+: []
+
+  Move Assignment   - protein_DBA.size =   23012 strings -> 
+                                                   (a) String     1: [MGARHLRYGREAGMNKTEIP]
+                                                   (a) String   100: [MSTPAPGPRSGGELLVAQLQ]
+                                                   (a) String  1000: [MPQTLEVIATLLFAVAVLHT]
+                                                   (a) String  last: [MAKVALITGITGQDGAYLAE]
+                                                   (a) String last+: []
+
+                                                   (d) String     1: []
+                                                   (d) String   100: []
+                                                   (d) String  1000: []
+                                                   (d) String  last: []
+                                                   (d) String last+: []
+--------------------------
+Execution Times:
+--------------------------
+  0-arg Constructor             400 nanoseconds
+  1-arg Constructor        48623414 nanoseconds
+  Copy Constructor          8935002 nanoseconds
+  Copy Assignment           8600003 nanoseconds
+  Move Constructor              100 nanoseconds
+  Move Assignment               100 nanoseconds
+  Destructor                5763401 nanoseconds
+--------------------------
