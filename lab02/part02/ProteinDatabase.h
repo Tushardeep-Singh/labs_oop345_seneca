@@ -85,7 +85,7 @@ namespace sdds
 
                 this->counter = source.counter;
 
-                (this->p_seq_arr) = move((source.p_seq_arr)); // moves the contents of source.p_seq_arr into this->p_seq_arr, along with memory address
+                (this->p_seq_arr) = move((source.p_seq_arr)); 
 
                 // assigning to nullptr prevents destructor from deleting the memory.
                 if (source.p_seq_arr != nullptr)
