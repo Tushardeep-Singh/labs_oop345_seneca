@@ -1,0 +1,164 @@
+/*
+Name : Tushardeep Singh
+seneca e-mail: tsingh245@myseneca.ca
+Seneca Student ID: 160427217
+completion date: 2nd Febuary'2023
+*/
+
+---------------------------------------------------------
+
+Pair.h :
+The additional code added other than already provided have the following reasons :
+
+ Pair();
+This default constructor has been added to set the member variables to empty string which is required as per the sample output. Other than that to set the member variables to [No Key][No Value], uniform initialisation has been used.
+
+
+friend std::ostream &operator<<(std::ostream &out, const Pair &pair)
+        {
+            int colwidth{20};
+            out << std::setw(colwidth) << std::right << pair.m_key << ": ";
+            out << pair.m_value;
+
+            return out;
+        }
+Herein, operator << has been overloaded, because 'Pair' is not a built-in type, so << had to be overloaded so that the instances of the objects stored in the array could be printed on the console.
+
+
+        friend bool operator==(const Pair &lhs, const Pair &rhs)
+        {
+            if (lhs.m_key == rhs.m_key)
+            {
+                return true;
+            }
+
+            return false;
+        }
+Herein, operator == has been overloaded to prevent same keys from being added to the array. 
+It has been used here : 
+if (x != i && (_collection_arr[i].getKey() == _collection_arr[x].getKey()))
+                {
+                    return false;
+                }
+
+---------------------------------------------------------
+
+Topics that I thoroughly learned :
+I learned that when a new object of type template class gets created, then the most specialised template class will be used for that object.
+Here is an example from the code :
+
+sdds::Collection<sdds::Pair, 100>* setDictionary = new sdds::Set<sdds::Pair>();
+Above, if we assume that we do not yet know any specialised template class has been created yet and also that class Collection has virtual functions defined, then :
+
+for (const auto& item : pData)
+			setDictionary->add(item);
+Above, we would believe that function add() that has been overwritten in class 'Set' will get called, but this is not the case.
+
+We have a specialised template class defined as below :
+template <> // specialising collection class
+    class Collection<sdds::Pair, 100>
+Now, this class is most specialised to meet our requirements, so add() from above specialised template class will get called.
+
+---------------------------------------------------------
+
+I faced trouble when I was defining the destructor again in the specialised Collection class, but it was not supposed to be declared again because specialised classes inherit it. In contrast, destructors have to be declared in derived classes if we are modifying the virtual function of the base class.
+Actually, I was declaring the destructor in the specialised Collection class, which gave me errors, though I removed the line and the code worked fine, but it took me some time to understand as to why it worked.
+
+---------------------------------------------------------
+ 
+Virtual function add() has been specialised in the following places:
+
+Set.h
+        bool add(const T &item)
+        {
+            // _n_capacity assigned default value of collection class
+            if (this->_n_capacity >= 100)
+            {
+                return false;
+            }
+            static int i = 0; // for index of array
+            for (int x = 0; x < i; ++x)
+            {
+                if (this->_collection_arr[x] == item)
+                {
+                    return false;
+                }
+            }
+            this->_collection_arr[i] = item;
+            ++this->_n_capacity;
+            ++i;
+            return true;
+        }
+
+
+        bool add(const double &item)
+        {
+            if (this->_n_capacity >= this->capacity_cpy)
+            {
+                return false;
+            }
+            static int i = 0; // for index of array
+
+            for (int i = 0; i < this->_n_capacity; ++i)
+            {
+                if (std::fabs(this->_collection_arr[i] - item) <= 0.01)
+                {
+                    return false;
+                }
+            }
+            this->_collection_arr[i] = item;
+
+            ++this->_n_capacity;
+            ++i;
+            return true;
+        }
+
+
+Collection.h
+Below, is the virtual function that gets inherited in every derived class.
+        virtual bool add(const T &item)
+        {
+            if (_n_capacity >= CAPACITY)
+            {
+                return false;
+            }
+            static int i = 0; // for index of array
+            _collection_arr[i] = item;
+            ++_n_capacity;
+            ++i;
+            return true;
+        }
+
+        bool add(const Pair &item)
+        {
+            if (_n_capacity >= 100)
+            {
+                return false;
+            }
+            static int i = 0; // for index of array
+
+            _collection_arr[i] = item;
+            for (int x = 0; x < i; ++x)
+            {
+                if (x != i && (_collection_arr[i].getKey() == _collection_arr[x].getKey()))
+                {
+                    return false;
+                }
+            }
+            ++_n_capacity;
+            ++i;
+            return true;
+        }
+
+
+So,  add() has been specialised 3 times.
+It can be seen that all of them do one common thing, which is adding 'item' into '_collection_arr[I]'. 
+They have been specialised to meet the requirements mentioned in the lab instructions like not adding the instances of object with the same key.
+
+---------------------------------------------------------
+
+
+
+
+
+
