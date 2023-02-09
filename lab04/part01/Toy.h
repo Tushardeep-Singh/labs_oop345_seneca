@@ -4,7 +4,7 @@
 Name : Tushardeep Singh
 seneca e-mail: tsingh245@myseneca.ca
 Seneca Student ID: 160427217
-completion date: 2nd Febuary'2023
+completion date: 9th Febuary'2023
 */
 #ifndef TOY_H
 #define TOY_H
