@@ -1,0 +1,110 @@
+***********************
+Name: Tushardeep Singh
+Student I'd: 160427217
+Lab04 Part02
+Reflection
+***********************
+
+In this workshop I learned how to work with objects of another class(say A) when they are made members of a class(say B). Both classes Child and ConfirmOrder have member variables of type Toy. Both of them have pointers that point to objects of type Toy.
+
+In ConfirmOrder copy constructor : 
+
+                for (int i = 0; i < this->count; ++i)
+                {
+                    this->array_toy[i] = confirmOrder.array_toy[i];
+                }
+
+It can be seen that pointer to object (confirmOrder.array_toy[i]) is being copied into pointer to object this->array_toy[i]. But there is no new Toy object being created which is being assigned to this->array_toy[I] i.e. no heap memory is being created and both lhs and rhs are pointing to same memory address. 
+
+This is the reason that in w4_p2.cpp the following code snippet will update the confirmOrder object and not child, because  this->array_toy[i] and confirmOrder.array_toy[i] point to the same memory address, changes made to any one of these will be reflected in other one too. :- 
+
+196.		// updating some toys in main
+		//   child should not be affected
+		//   confirm order should be affected
+		toys[0]->update(6);
+200.		toys[2]->update(4);
+
+ConfirmOrder is not creating new Toy objects stored at index of confirmOrder.array_toy[i] which means it is not responsible for the allocating and deallocating memory of Toy objects. Hence, confirmOrder is in aggregation relation with Toy.
+
+
+
+In Child copy constructor : 
+    for (int i = 0; i < this->count; ++i)
+    {
+        this->toy_array[i] = new sdds::Toy(*child.toy_array[i]); // allocating new heap memory for each pointer to object
+    }
+
+Unlike ConfirmOrder, here a new instance of Toy object at 'i' is created on heap which is then stored in this->toy_array[i]. This is possible only because Child owns Toy and has the responsibility of allocating and deallocating the Toy memory. This shows that Child and Toy has a composite relationship.
+
+
+
+I faced a lot of problems managing the memory, I struggled a lot with it since there was memory leaks all over. Managing the memory of the double pointer was one concern but I got stuck in one place : 
+
+In confirmOrder.h :
+
+
+        // overload '+='
+        ConfirmOrder &operator+=(const Toy &toy)
+        {
+            // check duplicate
+            // allocate temp
+            // add to temp &toy
+            // loop through, add to temp all the value before count stored in array_toy
+            // then deallocate array_toy
+            // allocate memory to array_toy with counter +1
+            // store everything into array_toy again with c+ 1 from temp
+            // delete temp
+
+            // check for duplicate value
+            for (int i = 0; i < count; ++i)
+            {
+                if (array_toy[i] == &toy)
+                {
+                    // delete[] temp;
+                    // temp = nullptr;
+                    return *this;
+                }
+            }
+
+            const Toy **temp = new const sdds::Toy *[count + 1]; // create a temporary array, used to resize the array_toy
+            temp[count] = &toy;
+
+            // check for duplicate value
+            // for (int i = 0; i < count; ++i)
+            // {
+            //     if (array_toy[i] == &toy)
+            //     {
+            //         delete[] temp; // if duplicate delete temp otherwise memory leak
+            //         temp = nullptr;
+            //         return *this;
+            //     }
+            // }
+
+Above, it can be seen that there is a check for duplicate, but before I put it below where I allocated heap memory to temp, but I wasn't able to understand why was the memory being leaked here ? I thought to myself I  have returned *this if duplicate is found but this shouldn't be causing any memory leaks. 
+There was one little mistake I found, which was whenever '+=' was being used the first thing that happened was memory was being assigned to 'temp' and since in w4_p2.cpp :
+		order1 += *ppToys[6];
+		order1 += *ppToys[6];
+
+So, when *ppToys[6] was being added to order1 again, 'temp' was assigned memory and just after *this was returned, and so temp got leaked. 
+To correct this I had to delete temp and assign it nullptr if duplicate was found since at that point memory will be allocated to temp.
+After that I shifted duplicate check before memory assignment. 
+
+ 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
