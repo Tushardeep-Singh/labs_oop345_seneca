@@ -1,5 +1,5 @@
-# Labs
-Object-Oriented Software Development Using C++ (OOP345 @ Seneca College)
+# Object-Oriented Software Development Using C++
+OOP345 @ Seneca College: https://www.senecacollege.ca/cgi-bin/subject?s1=OOP345
 
 | **_lab_**   |         **_grade_**        |
 |-------------|:--------------------------:|
