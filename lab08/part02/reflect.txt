@@ -1,0 +1,50 @@
+//  > I have done all the coding by myself and only copied the code that my professor provided to complete my workshops and assignments.
+/*
+             Name :     Tushardeep Singh
+    Seneca e-mail :     tsingh245@myseneca.ca
+      Student I'd :     160427217
+Date of completion:     26th March'2023
+*/
+
+
+*************************************************************************************************************************************************************************
+why could we not use a `unique_ptr` in your `Database` class?
+
+If we used unique_ptr instead of shared_ptr then we would not be able to create a new shared_ptr to perform different operations on it. 
+For eg: 
+In w8_p2.cpp
+
+		for (auto& key : keys)
+		{
+			auto dB = sdds::Database<std::string>::getInstance(key); // the parameter should be ignored
+			std::string value;
+			if (dB->GetValue(key, value) == sdds::Err_Status::Err_Success)
+				std::cout << key << " earned " << value << std::endl;
+			else
+				std::cout << "Unable to retrieve earnings for " << key << std::endl;
+		}
+
+Here, getInstance() has been called which would return existing database object which then gets pointed to by dB. This would not have been possible if we used unique_ptr because unique_ptr only allows one owner at a time and doesn't allow sharing the object, so instead of sharing the object, the object ownership would have ben moved to dB instead of sharing.
+*************************************************************************************************************************************************************************
+what changes you had to make in *part 1* to transform the class into a templated one?
+
+I had to include template declaration on the class. 
+template <typename T>
+
+Also accessing the member functions changed from sdds::Database:: to sdds::Database<T>::
+
+In database constructor I had to check for data type of param :
+if constexpr (std::is_same_v<T, std::string>)
+*************************************************************************************************************************************************************************
+we said that the class `Database` can be instantied only once, yet in the output we see that the custom constructor is called twice (same for the destructor). Explain.
+
+Singleton class means that only one object creation is allowed per data type. 
+w8_p2.cpp :
+		void* db1 = sdds::Database<std::string>::getInstance(argv[1]).get();
+		void* db2 = sdds::Database<long long>::getInstance(argv[2]).get();
+
+Constructor was called twice because once we created database with type std::string and then with type long long. 
+This is also the reason destructor was called twice, once to delete both the instances.
+
+*************************************************************************************************************************************************************************
+

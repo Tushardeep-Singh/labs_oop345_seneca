@@ -1,0 +1,9 @@
+[0x1111c20] Database(const std::string&)
+Same database.
+
+Ashleigh Barty earned $3,765,182
+Barbora Krejcikova earned $2,800,013
+Karolina Pliskova earned $2,061,970
+Unable to retrieve earnings for Leylah Fernandez
+Naomi Osaka earned $2,126,222
+[0x1111c20] ~Database()
